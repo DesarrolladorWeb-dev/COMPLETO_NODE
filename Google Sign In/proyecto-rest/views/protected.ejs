@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Protected Page</title>
+</head>
+<body>
+  <h1>Hello <%= displayName %></h1>
+  <p>Imagen <%= picture %></p>
+  <p>Correo <%= email %></p>
+  <p>Your token is: <%= token %></p>
+  <button onclick="enviarPost()">PRECIONAR PARA REALIZAR UN POST</button>
+  <br><br>
+  <button><a href="/auth/logout">Sing out</a></button>
+
+
+  <script>
+    console.log(window.location.hostname.includes('localhost'))
+    function enviarPost() {
+
+      
+      var url = 'http://localhost:5000/api/auth/google'
+                    
+      const token = '<%= token %>';
+      const nombre = '<%= displayName %>'
+      const img='<%= picture %>'
+      const correo = '<%= email %>'
+      
+      // Realizar el fetch POST con el token
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token , correo , img , nombre})
+      })
+        .then(response => response.json())
+        .then(data => {
+          
+          console.log("Nuestro server " , data);
+        })
+        .catch(error => {
+          // Manejar errores
+          console.error(error);
+        });
+    }
+   
+  </script>
+</body>
+</html>
